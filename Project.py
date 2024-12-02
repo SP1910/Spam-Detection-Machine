@@ -6,17 +6,21 @@ import pandas as pd
 from sklearn.svm import SVC
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-data = pd.read_csv("indian_spam.csv")
+data = pd.read_csv("indian_spam.csv", encoding= 'latin')
+
+data2 = pd.read_csv("spam.csv", encoding='latin')
+data2.drop(['Unnamed: 2', 'Unnamed: 3', 'Unnamed: 4'],axis=1, inplace=True)
+data = pd.concat([data,data2], ignore_index= True)
+
 data.columns=['result', 'text']
 data['result'] = data['result'].map({'ham': 0, 'spam': 1})
-
 
 vec = TfidfVectorizer()
 x= vec.fit_transform(data['text'])
 y= data['result']
 
 
-model = SVC(kernel = 'linear', C=5)
+model = SVC(kernel = 'linear', C=1)
 model.fit(x,y)
 samplex = ''
 sampley = 0
@@ -58,12 +62,14 @@ delete.pack()
 spacer = Label(window, pady=1, background='#6200EE')
 spacer.pack()
 def result():
-        samplex = txt_var.get()
+        samplex = txt_var.get().strip()
         vec_samplex = vec.transform([samplex])
         sampley = model.predict(vec_samplex)
         if(samplex==''):
             messagebox.showerror('Result','Please Enter Text!!')
         else:
+            # if():
+            #      messagebox.showinfo('Result','Please Enter a Valid Text')
             if(sampley==0):
                 messagebox.showinfo('Result','Not a SPAM!!')
             else:
