@@ -47,7 +47,7 @@ spacer.pack()
 
 txt_var = StringVar()
 # Creating a textbox
-txt = Entry(window, width=80, bd=5, textvariable=txt_var, font = ('Arial', 10))
+txt = Text(window, height = 8, width = 50)
 txt.pack()
 
 spacer = Label(window, pady=1, background='#6200EE')
@@ -62,7 +62,7 @@ delete.pack()
 spacer = Label(window, pady=1, background='#6200EE')
 spacer.pack()
 def result():
-        samplex = txt_var.get().strip()
+        samplex = txt.get("1.0", END).strip()
         vec_samplex = vec.transform([samplex])
         sampley = model.predict(vec_samplex)
         if(samplex==''):
